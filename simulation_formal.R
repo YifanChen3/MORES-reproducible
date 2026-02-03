@@ -1,4 +1,4 @@
-######################## multiLMMsel #############################
+######################## MORES #############################
 ########## Low Gaussian ###########
 sim.fun <- function(seed){
   d <- 5
@@ -88,7 +88,7 @@ sim.fun <- function(seed){
   taus <- seq(tau.max,tau.min,length.out=length.out)
   
   t1 <- Sys.time()
-  result.sim <- multiLMMsel.cv(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
+  result.sim <- MORES.cv(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
   t2 <- Sys.time()
   result.sim$time <- as.numeric(difftime(t2, t1, units = "secs"))
   
@@ -191,7 +191,7 @@ sim.fun <- function(seed){
   taus <- seq(tau.max,tau.min,length.out=length.out)
   
   t1 <- Sys.time()
-  result.sim <- multiLMMsel.cv(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
+  result.sim <- MORES.cv(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
   t2 <- Sys.time()
   result.sim$time <- as.numeric(difftime(t2, t1, units = "secs"))
   
@@ -286,7 +286,7 @@ sim.fun <- function(seed){
   taus <- seq(tau.max,tau.min,length.out=length.out)
   
   t1 <- Sys.time()
-  result.sim <- multiLMMsel.cv(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
+  result.sim <- MORES.cv(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
   t2 <- Sys.time()
   result.sim$time <- as.numeric(difftime(t2, t1, units = "secs"))
   
@@ -387,7 +387,7 @@ sim.fun <- function(seed){
   taus <- seq(tau.max,tau.min,length.out=length.out)
   
   t1 <- Sys.time()
-  result.sim <- multiLMMsel.cv(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
+  result.sim <- MORES.cv(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
   t2 <- Sys.time()
   result.sim$time <- as.numeric(difftime(t2, t1, units = "secs"))
   
@@ -424,8 +424,8 @@ stopCluster(cl)
 
 
 
-######################## multiLMMsel (Marginal) #############################
-multi.our <- function(Y,Z,X,lambda.path,tau.path,id,sigmaB=NULL,sigmaE=NULL,beta=NULL,threshold = 0.01,alpha = 1,gamma=2){
+######################## MORES (Marginal) #############################
+multi.MORES <- function(Y,Z,X,lambda.path,tau.path,id,sigmaB=NULL,sigmaE=NULL,beta=NULL,threshold = 0.01,alpha = 1,gamma=2){
   nis <- tabulate(match(id, unique(id)))
   m <- length(nis)
   q <- ncol(Z)/m
@@ -441,7 +441,7 @@ multi.our <- function(Y,Z,X,lambda.path,tau.path,id,sigmaB=NULL,sigmaE=NULL,beta
   #l.tau.path <- matrix(0,length(tau.path),d)
   for (di in 1:d) {
     y <- as.matrix(Y[,di])
-    cv.result <- multiLMMsel.cv(y,Z,X,lambda.path,tau.path,id = id,sigmaB = NULL,sigmaE = NULL,beta=NULL,threshold = threshold,alpha = alpha,gamma=gamma)
+    cv.result <- MORES.cv(y,Z,X,lambda.path,tau.path,id = id,sigmaB = NULL,sigmaE = NULL,beta=NULL,threshold = threshold,alpha = alpha,gamma=gamma)
     sigmaB.list[[di]] <- cv.result$SigmaB
     sigmaE.final[di,di] <- cv.result$SigmaE
     beta.final[,di] <- as.vector(cv.result$beta)
@@ -475,7 +475,7 @@ multi.our <- function(Y,Z,X,lambda.path,tau.path,id,sigmaB=NULL,sigmaE=NULL,beta
 }
 
 ############# High Gaussian #############
-sim.our.independent <- function(seed){
+sim.MORES.marginal <- function(seed){
   d <- 5
   q <- 20
   dq <- d*q
@@ -561,7 +561,7 @@ sim.our.independent <- function(seed){
   taus <- seq(tau.max,tau.min,length.out=length.out)
   
   t1 <- Sys.time()
-  result.sim <- multi.our(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
+  result.sim <- multi.MORES(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
   t2 <- Sys.time()
   result.sim$time <- as.numeric(difftime(t2, t1, units = "secs"))
   
@@ -570,7 +570,7 @@ sim.our.independent <- function(seed){
 }
 
 ############# High Laplace #############
-sim.our.independent <- function(seed){
+sim.MORES.marginal <- function(seed){
   d <- 5
   q <- 20
   dq <- d*q
@@ -663,7 +663,7 @@ sim.our.independent <- function(seed){
   taus <- seq(tau.max,tau.min,length.out=length.out)
   
   t1 <- Sys.time()
-  result.sim <- multi.our(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 0.5,gamma=2)
+  result.sim <- multi.MORES(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 0.5,gamma=2)
   t2 <- Sys.time()
   result.sim$time <- as.numeric(difftime(t2, t1, units = "secs"))
   
@@ -672,7 +672,7 @@ sim.our.independent <- function(seed){
 }
 
 ############# Low Gaussian #############
-sim.our.independent <- function(seed){
+sim.MORES.marginal <- function(seed){
   d <- 5
   q <- 8
   dq <- d*q
@@ -758,7 +758,7 @@ sim.our.independent <- function(seed){
   taus <- seq(tau.max,tau.min,length.out=length.out)
   
   t1 <- Sys.time()
-  result.sim <- multi.our(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
+  result.sim <- multi.MORES(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
   t2 <- Sys.time()
   result.sim$time <- as.numeric(difftime(t2, t1, units = "secs"))
   
@@ -767,7 +767,7 @@ sim.our.independent <- function(seed){
 }
 
 ############# Low Laplace #############
-sim.our.independent <- function(seed){
+sim.MORES.marginal <- function(seed){
   d <- 5
   q <- 8
   dq <- d*q
@@ -859,7 +859,7 @@ sim.our.independent <- function(seed){
   taus <- seq(tau.max,tau.min,length.out=length.out)
   
   t1 <- Sys.time()
-  result.sim <- multi.our(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
+  result.sim <- multi.MORES(Y,Z,X,lambdas,taus,id = id,sigmaB = sigmaB,sigmaE = sigmaE,beta=beta,threshold = 0.01,alpha = 1,gamma=2)
   t2 <- Sys.time()
   result.sim$time <- as.numeric(difftime(t2, t1, units = "secs"))
   
@@ -871,7 +871,7 @@ library(parallel)
 seed = 1:100
 ncores = detectCores()
 cl = makeCluster(ncores)
-result_list = mclapply(seed, sim.our.independent, mc.cores = 12)
+result_list = mclapply(seed, sim.MORES.marginal, mc.cores = 12)
 stopCluster(cl)
 
 
