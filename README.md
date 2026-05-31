@@ -1,2 +1,2 @@
-# MORES-reproducible
-This repository contains the simulation code of the `MORES` package that will generate exactly the same result as in the paper. For the detail of this R package, please refer to my another repository "MORES".
+# MOMENT-reproducible
+This repository contains the simulation code of the `MOMENT` package that will generate exactly the same result as in the paper. For the detail of this R package, please refer to my another repository "MOMENT".
